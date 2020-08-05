@@ -5,21 +5,17 @@ import Card from '../shared/card';
 import ContentWithBackground from '../shared/content-with-background';
 import CustomModal from '../shared/custom-modal';
 import { MaterialIcons } from '@expo/vector-icons';
+import ReviewService from '../services/reviewService';
 
 export default function Home({ navigation }) {
+    const reviewService = ReviewService.getInstance();
     const [isModalOpen, setIsModalOpen] = useState({ value: false });
 
-    const [reviews, setReviews] = useState([
-        { title: 'GTA San Andreas', rating: 5, body: 'Some game body', key: '1' },
-        { title: 'Call of duty', rating: 4, body: 'Some game body', key: '2' },
-        { title: 'FIFA 2020', rating: 3, body: 'Some game body', key: '3' }
-    ]);
+    const [reviews, setReviews] = useState(reviewService.getReviews());
 
     const addReview = (review) => {
-        review.key = Math.random().toString();
-        setReviews((currentReviews) => {
-            return [review, ...currentReviews];
-        })
+        reviewService.addReview(review);
+        setReviews(reviewService.getReviews());
         setIsModalOpen(false);
     }
     
